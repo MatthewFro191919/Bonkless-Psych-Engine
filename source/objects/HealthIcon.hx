@@ -1,16 +1,22 @@
 package objects;
 
+import objects.Character;
+
 class HealthIcon extends FlxSprite
 {
+	public var dad:Character = null;
+        public var gf:Character = null;
+	public var boyfriend:Character = null;
+
 	public var sprTracker:FlxSprite;
 	private var isPlayer:Bool = false;
 	private var char:String = '';
+	var kadecharacters:Array<String> = ['bf','baby','homer','freddy','scout','miku','pewdiepie','tinky','monstershit','running-goblin','evil-baby','gametoons','screamer','alien','bob','player-baby','bob-ron','ron','bobcreature','bobdead','bf-baby','bf-baby-goblin','happy-baby','kitty','myth','window-watcher','glassgoblin','glassbaby',];
 
 	public function new(char:String = 'face', isPlayer:Bool = false, ?allowGPU:Bool = true)
 	{
 		super();
 		this.isPlayer = isPlayer;
-		changeIcon(char, allowGPU);
 		scrollFactor.set();
 	}
 
@@ -25,25 +31,12 @@ class HealthIcon extends FlxSprite
 	private var iconOffsets:Array<Float> = [0, 0];
 	public function changeIcon(char:String, ?allowGPU:Bool = true) {
 		if(this.char != char) {
-			var name:String = 'icons/' + char;
-			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char; //Older versions of psych engine's support
-			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-face'; //Prevents crash from missing icon
-			
-			var graphic = Paths.image(name, allowGPU);
-			var iSize:Float = Math.round(graphic.width / graphic.height);
-			loadGraphic(graphic, true, Math.floor(graphic.width / iSize), Math.floor(graphic.height));
-			iconOffsets[0] = (width - 150) / iSize;
-			iconOffsets[1] = (height - 150) / iSize;
-			updateHitbox();
+				loadGraphic(Paths.image('iconGrid'), true, 150, 150);
 
-			animation.add(char, [for(i in 0...frames.frames.length) i], 0, false, isPlayer);
-			animation.play(char);
-			this.char = char;
-
-			if(char.endsWith('-pixel'))
-				antialiasing = false;
-			else
-				antialiasing = ClientPrefs.data.antialiasing;
+				antialiasing = true;
+				animation.add('bf', [0, 1], 0, false, isPlayer);
+				animation.add('sonicfun', [26, 27], 0, false, isPlayer);
+				animation.play(char);
 		}
 	}
 
